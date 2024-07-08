@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>inserisci nomi</title>
+</head>
+
+<body>
+	<form method="POST">	
+		inserire nome<input type="text" name="nome">
+		<input type="submit" value="salva" name="action2"/><br>
+	</form>
+	<h1>nomi inseriti</h1>
+	<ul>
+	{% for nome in nomi %}
+		<li>{{nome}}</li>
+	{% endfor %}
+	</ul>
+	<h1>nomi in ordine alfabetico</h1>
+	<ul>
+	{% for nome in nomi2 %}
+		<li>{{nome}}</li>
+	{% endfor %}
+	</ul>
+	<form method="POST"> <!-- Aggiungi questo form per il pulsante "Cancella" -->
+		<input type="submit" value="Cancella" name="action1"/>
+        <button type="submit" value="Cancella" name="action1">cancella</button><br>
+    </form>
+	<form method="POST"> <!-- Aggiungi questo form per il pulsante "Cancella" -->
+		<input type="submit" value="Ordina" name="action3"/>
+    </form>
+</body>
+</html>
