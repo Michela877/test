@@ -25,10 +25,10 @@ pipeline {
             steps {
                 script {
                     powershell '''
-                        if (docker images -q myapp) {
-                            docker rm myapp
+                        if (docker images -q test) {
+                            docker rm test
                         }
-                        docker build -t myapp:latest .
+                        docker build -t test:latest .
                     '''
                     
                 }
@@ -39,13 +39,13 @@ pipeline {
             steps {
                 script {
                     powershell '''
-                        if (docker ps -q --filter "name=myapp_container") {
-                            docker stop myapp_container
+                        if (docker ps -q --filter "name=test_container") {
+                            docker stop test_container
                         }
-                        if (docker ps -aq --filter "name=myapp_container") {
-                            docker rm myapp_container
+                        if (docker ps -aq --filter "name=test_container") {
+                            docker rm test_container
                         }
-                        docker run -d -p 5000:5000 --name myapp_container myapp:latest
+                        docker run -d -p 5000:5000 --name test_container test:latest
                     '''
                 }
             }
