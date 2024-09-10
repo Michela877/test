@@ -12,8 +12,8 @@ pipeline {
             steps {
                 script {
                     powershell '''
-                        $env:Path += "C:/Users/admin-corso/AppData/Local/Programs/Python/Launcher"
-                        py -m venv venv
+                        $pythonLauncherPath = "C:\\Users\\admin-corso\\AppData\\Local\\Programs\\Python\\Launcher\\py.exe"
+                        & $pythonLauncherPath -m venv venv
                         .\\venv\\Scripts\\Activate.ps1
                         pip install -r requirements.txt
                     '''
