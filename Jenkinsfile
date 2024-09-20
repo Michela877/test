@@ -7,13 +7,14 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/Michela877/test.git'
             }
         }
-
+        
         stage('Install dependencies') {
             steps {
                 script {
-                    sh '''
-                        python3 -m venv venv
-                        source venv/bin/activate
+                    powershell '''
+                        $pythonLauncherPath = "C:\\Users\\admin-corso\\AppData\\Local\\Programs\\Python\\Launcher\\py.exe"
+                        & $pythonLauncherPath -m venv venv
+                        .\\venv\\Scripts\\Activate.ps1
                         pip install -r requirements.txt
                     '''
                 }
@@ -23,12 +24,13 @@ pipeline {
         stage('Build Docker image') {
             steps {
                 script {
-                    sh '''
-                        if [ "$(docker images -q test)" ]; then
-                            docker rmi test
-                        fi
+                    powershell '''
+                        if (docker images -q test) {
+                            docker rm test
+                        }
                         docker build -t test:latest .
                     '''
+                    
                 }
             }
         }
@@ -36,28 +38,28 @@ pipeline {
         stage('Run Docker container') {
             steps {
                 script {
-                    sh '''
-                        if [ "$(docker ps -q --filter name=test_container)" ]; then
+                    powershell '''
+                        if (docker ps -q --filter "name=test_container") {
                             docker stop test_container
-                        fi
-                        if [ "$(docker ps -aq --filter name=test_container)" ]; then
+                        }
+                        if (docker ps -aq --filter "name=test_container") {
                             docker rm test_container
-                        fi
+                        }
                         docker run -d -p 5000:5000 --name test_container test:latest
                     '''
                 }
             }
         }
-
+        
         stage('Remove Docker images') {
             steps {
                 script {
-                    sh '''
-                        if [ "$(docker images -f dangling=true -q)" ]; then
+                    powershell '''
+                        if (docker images -f "dangling=true" -q) {
                             docker image prune -f
-                        fi
-                    '''
-                }
+                        }
+                    ''' 
+                }                
             }
         }
     }
